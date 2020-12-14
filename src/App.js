@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { ColorListPage } from './components/pages';
+import { useDispatch } from 'react-redux';
+import api from './redux/services';
+import { setColorList } from './redux/actions';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    api.colorList.getColors().then((result) => {
+      result.json().then((colorList) => {
+        dispatch(setColorList(colorList));
+      });
+    });
+  });
+  return <ColorListPage />;
 }
 
 export default App;
